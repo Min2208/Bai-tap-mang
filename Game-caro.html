@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Caro</title>
+    <style>
+        .box {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="board"></div>
+<button onclick="startCaroGame()">Start Game</button>
+<p id="result"></p>
+<script>
+    let boxContent = "X";
+    let arrCaro = [];
+
+    function creatCaroTable() {
+        let table = "<table border='1px solid: black'>";
+        for (let i = 0; i < 10; i++) {
+            arrCaro[i] = [];
+            table += "<tr>";
+            for (let j = 0; j < 10; j++) {
+                arrCaro[i][j] = "";
+                table += "<td id='" + i + "-" + j + "' onclick='checkBox(this)' class='box'>" + arrCaro[i][j] + "</td>";
+            }
+            table += "</tr>";
+        }
+        table += "</table>";
+        document.getElementById("board").innerHTML = table;
+    }
+
+    function startCaroGame() {
+        document.getElementById('result').innerHTML = "";
+        if (Math.random() < 0.5) {
+            boxContent = "0";
+        }
+        creatCaroTable();
+    }
+
+    function checkBox(box) {
+        if (box.textContent == "") {
+            box.textContent = boxContent;
+            let valueBox = box.id.split("-");
+            arrCaro[valueBox[0]][valueBox[1]] = boxContent;
+            changePlayer();
+        }
+
+    }
+
+    function changePlayer() {
+        if (boxContent == "X") {
+            boxContent = "0";
+        } else {
+            boxContent = "X";
+        }
+        conditionWin();
+    }
+
+    function conditionWin() {
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                if (arrCaro[i][j] == arrCaro[i][j + 1] && arrCaro[i][j] == arrCaro[i][j + 2] && arrCaro[i][j] == "X") {
+                    document.getElementById('result').innerHTML = "Player X win";
+                    break;
+                }
+                if (arrCaro[i][j] == arrCaro[i][j + 1] && arrCaro[i][j] == arrCaro[i][j + 2] && arrCaro[i][j] == "0") {
+                    document.getElementById('result').innerHTML = "Player 0 win";
+                    break;
+                }
+                // if (arrCaro[i][j] == arrCaro[i+1][j] && arrCaro[i][j] == arrCaro[i + 2][j] && arrCaro[i][j] == "X") {
+                //     document.getElementById('result').innerHTML = "Player X win";
+                //     break;
+                // }
+                // if (arrCaro[i][j] == arrCaro[i+1][j] && arrCaro[i][j] == arrCaro[i + 2][j] && arrCaro[i][j] == "0") {
+                //     document.getElementById('result').innerHTML = "Player 0 win";
+                //     break;
+                // }
+                // if (arrCaro[i][j] == arrCaro[i+1][j+1] && arrCaro[i][j] == arrCaro[i + 2][j+2] && arrCaro[i][j] == "X") {
+                //     document.getElementById('result').innerHTML = "Player X win";
+                //     break;
+                // }
+                // if (arrCaro[i][j] == arrCaro[i+1][j+1] && arrCaro[i][j] == arrCaro[i + 2][j+2] && arrCaro[i][j] == "0") {
+                //     document.getElementById('result').innerHTML = "Player 0 win";
+                //     break;
+                // }
+                // if (arrCaro[i][j] == arrCaro[i-1][j+1] && arrCaro[i][j] == arrCaro[i - 2][j+2] && arrCaro[i][j] == "X") {
+                //     document.getElementById('result').innerHTML = "Player X win";
+                //     break;
+                // }
+                // if (arrCaro[i][j] == arrCaro[i-1][j+1] && arrCaro[i][j] == arrCaro[i - 2][j+2] && arrCaro[i][j] == "0") {
+                //     document.getElementById('result').innerHTML = "Player 0 win";
+                //     break;
+                // }
+
+            }
+        }
+    }
+</script>
+</body>
+</html>
