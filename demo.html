@@ -5,13 +5,24 @@
     <title>Title</title>
 </head>
 <body>
+
+<form>
+    <p>
+        <label>Fahrenheit</label>
+        <input id="inputFahrenheit" type="number" placeholder="Fahrenheit"
+               oninput="temperatureConverter(this.value)"
+               onchange="temperatureConverter(this.value)">
+    </p>
+    <p>Celsius: <span id="outputCelsius"></span></p>
+</form>
+
 <script>
-    function add(a, b) {
-        return a + b;
+
+    function temperatureConverter(valNum) {
+        valNum = parseFloat(valNum);
+        document.getElementById("outputCelsius").innerHTML = (valNum-32) / 1.8;
     }
 
-    let sum = add("4", "3");
-    document.write(sum);
 </script>
 </body>
 </html>

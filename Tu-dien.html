@@ -15,16 +15,22 @@
 
     function seach() {
         let output = document.getElementById('input').value;
-
+        let count=0;
         for (let i = 0; i < arrUs.length; i++) {
             console.log(arrUs[i]);
             if (output == arrUs[i]) {
                 document.getElementById('result').innerHTML = "Translate: " + arrVn[i];
-                console.log(document.getElementById('result').innerHTML);
                 break;
-            }
-            document.getElementById('result').innerHTML="Translate: khong co trong tu dien";
 
+            }else {
+                count++;
+            }
+
+
+        }
+        if (count==arrUs.length){
+            document.getElementById('result').innerHTML="Translate: khong co trong tu dien";
+            console.log(document.getElementById('result').innerHTML);
         }
 
     }
