@@ -11,14 +11,18 @@
         }
     </style>
 </head>
-<body>
+<body onload="creatCaroTable()">
 <div id="board"></div>
 <button onclick="startCaroGame()">Start Game</button>
+<button onclick="reset()">New Game</button>
 <p id="result"></p>
 <script>
     let boxContent = "X";
     let arrCaro = [];
-
+    let winer=null;
+    function reset() {
+        window.location.reload();
+    }
     function creatCaroTable() {
         let table = "<table border='1px solid: black'>";
         for (let i = 0; i < 10; i++) {
@@ -27,6 +31,7 @@
             for (let j = 0; j < 10; j++) {
                 arrCaro[i][j] = "";
                 table += "<td id='" + i + "-" + j + "' onclick='checkBox(this)' class='box'>" + arrCaro[i][j] + "</td>";
+
             }
             table += "</tr>";
         }
@@ -37,16 +42,21 @@
     function startCaroGame() {
         document.getElementById('result').innerHTML = "";
         if (Math.random() < 0.5) {
-            boxContent = "0";
+            boxContent = "O";
         }
+
+        console.log(Math.random());
         creatCaroTable();
     }
 
     function checkBox(box) {
-        if (box.textContent == "") {
+        if (winer!=null){
+
+        }else if (box.textContent == "") {
             box.textContent = boxContent;
             let valueBox = box.id.split("-");
             arrCaro[valueBox[0]][valueBox[1]] = boxContent;
+            conditionWin(parseInt(valueBox[0]), parseInt(valueBox[1]), boxContent);
             changePlayer();
         }
 
@@ -54,52 +64,116 @@
 
     function changePlayer() {
         if (boxContent == "X") {
-            boxContent = "0";
+            boxContent = "O";
+
         } else {
             boxContent = "X";
         }
-        conditionWin();
+        // conditionWin();
     }
 
-    function conditionWin() {
-        for (let i = 0; i < 10; i++) {
-            for (let j = 0; j < 10; j++) {
-                if (arrCaro[i][j] == arrCaro[i][j + 1] && arrCaro[i][j] == arrCaro[i][j + 2] && arrCaro[i][j] == "X") {
-                    document.getElementById('result').innerHTML = "Player X win";
-                    break;
-                }
-                if (arrCaro[i][j] == arrCaro[i][j + 1] && arrCaro[i][j] == arrCaro[i][j + 2] && arrCaro[i][j] == "0") {
-                    document.getElementById('result').innerHTML = "Player 0 win";
-                    break;
-                }
-                // if (arrCaro[i][j] == arrCaro[i+1][j] && arrCaro[i][j] == arrCaro[i + 2][j] && arrCaro[i][j] == "X") {
-                //     document.getElementById('result').innerHTML = "Player X win";
-                //     break;
-                // }
-                // if (arrCaro[i][j] == arrCaro[i+1][j] && arrCaro[i][j] == arrCaro[i + 2][j] && arrCaro[i][j] == "0") {
-                //     document.getElementById('result').innerHTML = "Player 0 win";
-                //     break;
-                // }
-                // if (arrCaro[i][j] == arrCaro[i+1][j+1] && arrCaro[i][j] == arrCaro[i + 2][j+2] && arrCaro[i][j] == "X") {
-                //     document.getElementById('result').innerHTML = "Player X win";
-                //     break;
-                // }
-                // if (arrCaro[i][j] == arrCaro[i+1][j+1] && arrCaro[i][j] == arrCaro[i + 2][j+2] && arrCaro[i][j] == "0") {
-                //     document.getElementById('result').innerHTML = "Player 0 win";
-                //     break;
-                // }
-                // if (arrCaro[i][j] == arrCaro[i-1][j+1] && arrCaro[i][j] == arrCaro[i - 2][j+2] && arrCaro[i][j] == "X") {
-                //     document.getElementById('result').innerHTML = "Player X win";
-                //     break;
-                // }
-                // if (arrCaro[i][j] == arrCaro[i-1][j+1] && arrCaro[i][j] == arrCaro[i - 2][j+2] && arrCaro[i][j] == "0") {
-                //     document.getElementById('result').innerHTML = "Player 0 win";
-                //     break;
-                // }
-
+    function conditionWin(a, b, value) {
+        let count1 = 0;
+        let count2 = 0;
+        let count3 = 0;
+        let count4 = 0;
+        //xet phuong ngang
+        for (let i = 0; i <3; i++) {
+            if (arrCaro[a][b] == arrCaro[a][b+i]) {
+                count1++;
+            } else {
+                break;
             }
+        }
+        for (let i = 1; i <3; i++) {
+
+            if (arrCaro[a][b] == arrCaro[a][b-i]) {
+                count1++;
+            } else {
+                break;
+            }
+        }
+        // xet phuong doc
+        if (a < arrCaro.length - 2) {
+            for (let i = 0; i <3; i++) {
+                if (arrCaro[a][b] == arrCaro[a+i][b]) {
+                    count2++;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (a > 1) {
+            for (let i =1; i <3; i++) {
+
+                if (arrCaro[a][b] == arrCaro[a-i][b]) {
+                    count2++;
+                } else {
+                    break;
+                }
+            }
+        }
+        //phuong cheo xuong
+        if (a < arrCaro.length - 2 && b < arrCaro[a].length - 2) {
+            for (let i = 0; i <3; i++) {
+                if (arrCaro[a][b] == arrCaro[a + i][b + i]) {
+                    count3++;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (a > 1 && b >1) {
+            for (let i = 1; i <3; i++) {
+                if (arrCaro[a][b] == arrCaro[a - i][b - i]) {
+                    count3++;
+                } else {
+                    break;
+                }
+            }
+        }
+        //phuong cheo len
+        if (a>1 && b<arrCaro[a].length - 2){
+            for (let i = 0; i <3; i++) {
+                if (arrCaro[a][b] == arrCaro[a - i][b + i]) {
+                    count4++;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (a<arrCaro.length-2 && b>1){
+            for (let i = 1; i <3; i++) {
+                if (arrCaro[a][b] == arrCaro[a + i][b - i]) {
+                    count4++;
+                } else {
+                    break;
+                }
+            }
+        }
+        console.log(count1);
+        console.log(count2);
+        console.log(count3);
+        console.log(count4);
+        if (count1 > 2) {
+            document.getElementById('result').innerHTML = "Player " + value + " win";
+            winer=value;
+        }
+        if (count2 > 2) {
+            document.getElementById('result').innerHTML = "Player " + value + " win";
+            winer=value;
+        }
+        if (count3 > 2) {
+            document.getElementById('result').innerHTML = "Player " + value + " win";
+            winer=value;
+        }
+        if (count4 > 2) {
+            document.getElementById('result').innerHTML = "Player " + value + " win";
+            winer=value;
         }
     }
 </script>
 </body>
 </html>
+
+
